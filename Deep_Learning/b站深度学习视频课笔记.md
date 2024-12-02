@@ -29,3 +29,27 @@ o	最后的输出结果对应的层也称之为全连接层
 向量化编程：
 避免使用for循环进行向量的计算
 ![alt text](image-38.png)
+
+![alt text](1733139312208.png)
+
+![alt text](image-39.png)
+
+
+**为什么要使用非线性的激活函数？**
+
+使用线性激活函数和不使用激活函数、直接使用 Logistic 回归没有区别，那么无论神经网络有多少层，输出都是输入的线性组合，与没有隐藏层效果相当，就成了最原始的感知器了。
+
+**激活函数的选择**
+
+![alt text](image-40.png)
+
+![alt text](image-41.png)
+
+![alt text](image-42.png)
+
+**前向传播**
+![alt text](image-43.png)
+**反向传播：梯度下降**
+就是求导
+![alt text](image-44.png)
+
