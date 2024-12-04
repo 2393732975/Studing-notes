@@ -137,3 +137,63 @@ for (int i = 0; i < n; i++) {
         }
 
 ```
+
+
+### 12/4 最长上升子序列模型（2）
+
+[题目：导弹拦截](https://www.acwing.com/problem/content/1012/)
+```cpp
+#include<iostream>
+#include<algorithm>
+
+using namespace std;
+const int N =1010;
+
+int n;
+int a[N];
+int f[N];
+int h[N];
+
+int main(){
+    while(cin>>a[n])n++;
+    //for(int i=0;i<n;i++)cout<<a[i];
+    
+    /*第一问：求最长下降子序列*/
+    int ans1= 0;
+    for(int i=0;i<n;i++){
+        f[i]=1;
+        for(int j=0;j<i;j++){
+            if(a[i]<=a[j]){
+                f[i] = max (f[j]+1,f[i]);
+            }
+        }
+        ans1 = max (ans1,f[i]);
+    }
+    cout<<ans1<<endl;
+    
+    /*第二问：求最长下降子序列
+    
+    
+    思路1：（代码略）
+    设最长上升子序列长度为l
+    所求上升子序列为h
+    那么h<=l
+    因为最长上升子序列任意两个不在一组内
+    (如果在同一个组内，则每个组的数不成为一个不生子序列，矛盾）
+    所以l==h
+    
+    思路2：贪心
+    
+    */
+    int cnt = 0;
+    for(int i=0;i<n;i++){
+        int k = 0;
+        while(k<cnt&&a[i]>h[k])k++;
+        if(k == cnt )h[cnt++] = a[i];
+        else h[k] = a[i];
+        
+    }
+    cout <<cnt;
+    return 0;
+}
+```
