@@ -197,3 +197,106 @@ int main(){
     return 0;
 }
 ```
+
+[导弹防御系统](https://www.acwing.com/problem/content/189/)
+
+```cpp
+#include<iostream>
+#include<algorithm>
+
+using namespace std;
+const int N =55;
+int a[N];
+int up[N];
+int down[N];
+int n;
+int ans;
+void dfs (int u,int su,int sd){
+    if(su+sd>=ans){
+        return ;
+    }
+    if(u==n){
+        ans = min(ans,su+sd);
+        return ;
+    }
+    //下降序列
+    int k=0;
+    while(k<su&&up[k]>=a[u])k++;
+    if(k<su){
+        int t =up[k];
+        up[k] = a[u];
+        dfs(u+1,su,sd);
+        up[k] = t;
+    }else {
+        up[k] = a[u];
+        dfs(u+1,su+1,sd);
+    }
+    
+    //上升序列
+    k=0;
+    while(k<sd&&down[k]<=a[u])k++;
+    if(k<sd){
+        int t = down[k];
+        down[k] = a[u];
+        dfs(u+1,su,sd);
+        down[k] = t; 
+    }else {
+        down[k] = a[u];
+        dfs(u+1,su,sd+1);
+    }
+    
+}
+
+int main(){
+   
+    while(cin>>n,n){
+        //cin>>n;
+        for(int i =0 ;i<n;i++){
+            cin>>a[i];
+        }
+        ans = n ;
+        dfs(0,0,0);
+        cout<<ans<<endl;
+    }
+    
+    
+    return 0;
+}
+```
+[题目：最长上升公共子序列](https://www.acwing.com/problem/content/274/)
+
+![alt text](image-2.png)
+
+```cpp
+#include<iostream>
+
+using namespace std;
+const int N=3010;
+int a[N];
+int b[N];
+int f[N][N];
+
+
+int main(){
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++)cin>>a[i];
+    for(int j=1;j<=n;j++)cin>>b[j];
+    
+    for(int i=1;i<=n;i++){
+        int max1=1;
+        for(int j=1;j<=n;j++){
+            f[i][j] = f[i-1][j];
+            if(a[i]==b[j]){
+                f[i][j] = max(max1,f[i][j]);
+            }
+            if(b[j]<a[i])max1 = max(max1,f[i-1][j]+1);
+        }
+    }
+    int res = 0;
+    for(int i=1;i<=n;i++)res =max(res,f[n][i]);
+    cout <<res;
+    
+    return 0;
+}
+```
