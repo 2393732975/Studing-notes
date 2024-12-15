@@ -300,3 +300,49 @@ int main(){
     return 0;
 }
 ```
+
+
+### 12/15 背包模型（1）
+复习：[背包模型基础模版](https://blog.csdn.net/hehongfei_/article/details/136474781)
+
+![alt text](image-3.png)
+
+**当空间优化成1维之后，只有完全背包问题的体积是从小到大循环的**
+
+[宠物小精灵之收服](https://www.acwing.com/problem/content/1024/)
+做01背包问题的时候，要考虑怎么找出体积和价值
+![alt text](image-4.png)
+
+```cpp
+#include<iostream>
+
+using namespace std;
+const int N =1010;
+const int M =510;
+int n , m, k;
+int f[N][M];
+
+
+int main(){
+    cin>>n>>m>>k;//N，M，K，分别代表小智的精灵球数量、皮卡丘初始的体力值、野生小精灵的数量。
+    for(int i=0;i<k;i++){
+        int v1,v2;
+        cin>>v1>>v2;
+        for(int j=n;j>=v1;j--){
+            for(int s=m;s>v2;s--){
+                f[j][s] = max(f[j][s],f[j-v1][s-v2]+1);
+            }
+        }
+    }
+    cout<<f[n][m]<<" ";
+    
+    int x = m;
+    while(x>0&&f[n][x]==f[n][m])x--;
+    cout<<m-x;
+    
+    //输出为一行，包含两个整数：C，R，分别表示最多收服C个小精灵，以及收服C个小精灵时皮卡丘的剩余体力值最多为R。
+    
+    return 0;
+}
+```
+
