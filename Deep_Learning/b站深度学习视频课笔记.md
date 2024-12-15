@@ -88,4 +88,6 @@ ReLU 和 Leaky ReLU 作为激活函数时不存在这种问题，因为在大于
 
 ##### 案例：miniset手写数字识别
 
-视频进度：41.09
+41.09 调整学习率带来的问题
+实战[miniset手写数字识别](https://blog.csdn.net/NikkiElwin/article/details/112980305)
+
