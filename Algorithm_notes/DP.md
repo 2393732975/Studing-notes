@@ -346,3 +346,59 @@ int main(){
 }
 ```
 
+### 12/17 背包模型（2）
+[二维费用的背包问题](https://www.acwing.com/problem/content/8/)
+
+![alt text](image-5.png)
+```cpp
+
+#include<iostream>
+
+using namespace std;
+const int MM=1010;
+int f[MM][MM];
+int main(){
+    int N,V,M;
+    cin>>N>>V>>M;
+    
+    for(int i=0;i<N;i++){
+        int v,m,w;
+        cin>>v>>m>>w;
+        for (int j=V;j>=v;j--){
+            for(int k = M;k>=m;k--){
+                f[j][k] = max(f[j][k],f[j-v][k-m]+w);
+            }
+        }
+    }
+    cout<<f[V][M];
+    return 0;
+}
+```
+
+变式：[潜水员](https://www.acwing.com/problem/content/1022/)
+![alt text](image-6.png)
+```cpp
+#include<iostream>
+#include<cstring>
+using namespace std;
+const int MM=1010;
+int f[MM][MM];
+int main(){
+    int N,V,M;
+    cin>>V>>M;
+    cin>>N;
+    memset(f,0x3f,sizeof f);
+    f[0][0]=0;
+    for(int i=0;i<N;i++){
+        int v,m,w;
+        cin>>v>>m>>w;
+        for (int j=V;j>=0;j--){
+            for(int k = M;k>=0;k--){
+                f[j][k] = min(f[j][k],f[max(0,j-v)][max(0,k-m)]+w);
+            }
+        }
+    }
+    cout<<f[V][M]<<endl;
+    return 0;
+}
+```
