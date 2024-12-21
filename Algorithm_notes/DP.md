@@ -376,7 +376,10 @@ int main(){
 ```
 
 变式：[潜水员](https://www.acwing.com/problem/content/1022/)
-![alt text](image-6.png)
+
+“至少”：当j-v2小于0，但是“至少是j”，说明存在j会使j-v2>=0成立，所以当j-v2小于0时，我们令其为0.
+
+![alt text](image-9.png)
 ```cpp
 #include<iostream>
 #include<cstring>
@@ -428,3 +431,92 @@ int main(){
     return 0;
 }
 ```
+
+
+### 12/21 背包模型（3）
+
+背包问题求具体方案
+[题目：背包问题求具体方案](https://www.acwing.com/problem/content/12/)
+以01背包为例
+思路：首先是如何求方案：在最后求出结果后，从最后往前推，看分别是选的哪个记录一下。
+如果要求选出的物品字典序最小，采取贪心的思路，从字典序从小到大（因此我们第一步的求最值可以序号从大到小求，这样求方案的时候就能从小到大求了）
+![alt text](image-10.png)
+```cpp
+#include<iostream>
+
+using namespace std;
+const int N = 1010;
+int v[N],w[N];
+int f[N][N];
+
+int main(){
+    int n,m;
+    cin>>n>>m;//分别表示物品数量和背包容积。
+    for(int i=1;i<=n;i++)cin>>v[i]>>w[i];
+    
+    for(int i=n;i>=1;i--){
+        for(int j=0;j<=m;j++){
+            f[i][j] = f[i+1][j];
+            if(j>=v[i]){
+                f[i][j] = max(f[i][j],f[i+1][j-v[i]]+w[i]);
+            }
+        }
+    }
+    //max:f[1][m]
+    int j = m;
+    for(int i=1;i<=n;i++){
+        if(j>=v[i]&&f[i][j]==f[i+1][j-v[i]]+w[i]){
+            cout<<i<<" ";
+            j-=v[i];
+        }
+    }
+    
+    
+    return 0;
+}
+```
+
+分组背包问题
+![alt text](image-11.png)
+![alt text](image-12.png)
+```cpp
+#include<iostream>
+
+using namespace std;
+const int N =110;
+int v[N][N],w[N][N];
+int f[N][N];
+int s[N];
+
+
+int main(){
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++){
+        cin>>s[i];
+        for(int j=0;j<s[i];j++){
+            cin>>v[i][j]>>w[i][j];
+        }
+    }
+    
+    //前i个物品，占多少体积，怎么选
+    for(int i=1;i<=n;i++){
+        for(int j=0;j<=m;j++){
+            //for(int k=0;k<v)
+            f[i][j] = f[i-1][j];
+            for(int k=0;k<s[i];k++){
+                if(j>=v[i][k]){
+                    f[i][j] = max(f[i][j],f[i-1][j-v[i][k]]+w[i][k]);
+                }
+            }
+            
+        }
+    }
+    cout<<f[n][m]<<endl;
+    
+    return 0;
+}
+
+```
+
+
