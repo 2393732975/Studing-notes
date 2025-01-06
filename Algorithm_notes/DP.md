@@ -564,3 +564,107 @@ int main(){
     return 0;
 }
 ```
+
+
+### 状态机模型
+2025/1/6
+![alt text](image-16.png)
+![alt text](image-15.png)
+
+```cpp
+
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+
+using namespace std;
+const int N = 100010;
+int f[N][2];
+int p[N];
+
+int main(){
+    
+    int T;
+    cin>>T;
+    while(T--){
+        int n;
+        cin>>n;
+        for(int i=1;i<=n;i++){
+            cin>>p[i];
+        }
+        f[0][0] = 0;
+        f[0][1] = -0x3f3f3f3f;
+        for(int i=1;i<=n;i++){
+            f[i][0] = max(f[i-1][0],f[i-1][1]);
+            f[i][1] = f[i-1][0] +p[i];
+        }
+        cout<<max(f[n][1],f[n][0])<<endl;
+    }
+    return 0;
+}
+```
+
+##### 股票状态机__2状态
+![alt text](image-18.png)
+![alt text](image-17.png)
+```cpp
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+const int N =100010;
+const int M =110;
+int f[N][M][2];
+int w[N];
+
+int main(){
+    int n,m;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)cin>>w[i];
+    //initail
+    memset(f,-0x3f,sizeof f);
+    for(int i=0;i<=n;i++)f[i][0][0] = 0;
+    
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=m;j++){
+            f[i][j][0] = max(f[i-1][j][0],f[i-1][j][1]+w[i]);
+            f[i][j][1] = max(f[i-1][j][1],f[i-1][j-1][0]-w[i]);
+        }
+    }
+    int res=0;
+    for(int i=1;i<=m;i++)res= max(res,f[n][i][0]);
+    cout<<res;
+    return 0;
+}
+
+```
+
+##### 股票状态机(2)__三状态
+![alt text](image-20.png)
+![alt text](image-19.png)
+```cpp
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+
+using namespace std;
+const int N = 100010;
+int f[N][3];
+int w[N];
+
+int main(){
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++)cin>>w[i];
+    f[0][1]=-0x3f3f3f3f;
+    f[0][0]=-0x3f3f3f3f;
+    for(int i=1;i<=n;i++){
+        f[i][0] = max(f[i-1][0],f[i-1][2]-w[i]);
+        f[i][1] = f[i-1][0]+w[i];
+        f[i][2] = max(f[i-1][1],f[i-1][2]);
+    }
+   cout<<max(f[n][1],f[n][2]);
+    return 0;
+}
+```
+
