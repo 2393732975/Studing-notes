@@ -668,3 +668,84 @@ int main(){
 }
 ```
 
+### 状态机模型
+分两类：（1）：棋盘式（基于连通性）；（2）集合
+
+例题:
+![alt text](image-21.png)
+![alt text](image-22.png)
+
+```cpp
+#include<iostream>
+#include<cstring>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+typedef long long LL;
+const int N = 12, M = 1 << 10, K = 110;
+
+int n, m;
+vector<int> state;       //state数组用于存放合法的状态
+int cnt[M];              //cnt用于存储state每个状态的1的个数
+vector<int> head[M];	 //head[i]用于存储与状态i不冲突的状态j
+
+LL f[N][K][M];           //f[i][j][s]所有只摆在前i行，已经摆了j个国王，并且第i行摆放的状态是s的所有方案的集合
+
+//检查state这个状态中有无两个相邻的1
+bool check(int state) {
+	for (int i = 0; i < n; i++) {
+		if ((state >> i & 1) & (state >> i + 1 & 1))
+			return false;
+	}
+	return true;
+}
+
+//计算state状态中含有多少个1
+int count(int state) {
+	int res = 0;
+	for (int i = 0; i < n; i++) {
+		res += (state >> i & 1);
+	}
+	return res;
+}
+
+int main() {
+	cin >> n >> m;
+
+	//先统计所有单独合法的状态
+	for (int i = 0; i < 1 << n; i++) {
+		if (check(i)) {
+			state.push_back(i);
+			cnt[i] = count(i);
+		}
+	}
+	//统计与状态i不冲突的状态j
+	for (int i = 0; i < state.size(); i++) {
+		for (int j = 0; j < state.size(); j++) {
+			int a = state[i];
+			int b = state[j];
+			if ((a & b) == 0 && check(a | b)) {
+				head[i].push_back(j);
+			}
+		}
+	}
+	f[0][0][0] = 1;
+
+	for (int i = 1; i <= n + 1; i++)
+		for (int j = 0; j <= m; j++)
+			for (int a = 0; a < state.size(); a++)
+				for (int b : head[a])
+				{
+					int c = cnt[state[a]];
+					if (j >= c)
+						f[i][j][state[a]] += f[i - 1][j - c][state[b]];
+				}
+
+	cout << f[n + 1][m][0] << endl;
+
+
+
+	return 0;
+}
+```
